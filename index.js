@@ -1,6 +1,6 @@
 var merge = require('merge-descriptors');
 
-module.exports = function (app, mode) {
+module.exports = function (app, mode, parseOptions, stringifyOptions) {
   mode = mode || 'extended';
   var qs = require('querystring');
   if (mode === 'extended') {
@@ -39,7 +39,7 @@ module.exports = function (app, mode) {
       var c = this._querycache = this._querycache || {};
       var query = c[str];
       if (!query) {
-        c[str] = query = qs.parse(str);
+        c[str] = query = qs.parse(str, parseOptions);
         if (converter) {
           for (var key in query) {
             query[key] = converter(query[key]);
@@ -57,7 +57,7 @@ module.exports = function (app, mode) {
      */
 
     set query(obj) {
-      this.querystring = qs.stringify(obj);
+      this.querystring = qs.stringify(obj, stringifyOptions);
     },
   });
 
